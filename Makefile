@@ -5,3 +5,6 @@ mysql_create:
 
 mysql_delete:
 	${DOCKER} rm -f mysql
+
+mysql_start:
+	${DOCKER} start mysql

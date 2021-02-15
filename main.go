@@ -5,40 +5,22 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/george124816/job-dev-backend-interview/internal/pkg/db"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate"
 	"github.com/golang-migrate/migrate/database/mysql"
 	_ "github.com/golang-migrate/migrate/source/file"
 )
 
-var user string = "root"
-var password string = "secret"
-var host string = "127.0.0.1"
-var port int = 3306
-var dbname string = "main"
-
 func main() {
-
-	db := connectDB()
-	migration(db)
-
-}
-
-func connectDB() *sql.DB {
-
-	stringConn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?multiStatements=true", user, password, host, port, dbname)
-
-	db, err := sql.Open("mysql", stringConn)
+	db := db.ConnectDB()
+	err := db.Ping()
 	if err != nil {
-		log.Panic(err)
-	}
-	err = db.Ping()
-	if err != nil {
-		log.Println(err)
-		return db
+		fmt.Println("Não conectado")
+	} else {
+		fmt.Println("Conectado")
 	}
 
-	return db
 }
 
 func migration(db *sql.DB) {
