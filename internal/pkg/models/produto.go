@@ -15,7 +15,7 @@ type Produto struct {
 }
 
 func (h *BaseHandler) GetProdutos() []Produto {
-	rows, err := h.db.Query("SELECT Id, IdRestaurante, Foto, Nome, Preço, Categoria, Promoção, DescriçãoPromoção, PreçoPromoção FROM Produtos")
+	rows, err := h.db.Query("SELECT Id, IdRestaurante, Foto, Nome, Preço, Categoria, Promoção, DescriçãoPromoção, PreçoPromoção FROM Produto")
 	if err != nil {
 		log.Println(err)
 	}

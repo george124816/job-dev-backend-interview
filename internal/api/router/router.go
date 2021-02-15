@@ -20,6 +20,9 @@ func Setup() *gin.Engine {
 		v1.GET("/promoções", controllers.GetPromoções)
 		v1.POST("/restaurante", controllers.InsertRestaurante)
 		v1.GET("/restaurante/:id", controllers.GetRestaurante)
+		v1.PUT("/restaurante/:id", controllers.AlterarRestaurante)
+		v1.DELETE("/restaurante/:id", controllers.ExcluirRestaurante)
+		v1.GET("/restaurante/:id/produtos", controllers.GetProdutosByRestaurante)
 	}
 
 	return router

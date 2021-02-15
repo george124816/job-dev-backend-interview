@@ -1,4 +1,4 @@
-CREATE TABLE `Produtos` (
+CREATE TABLE `Produto` (
 	`Id` INT NOT NULL AUTO_INCREMENT,
 	`IdRestaurante` INT NOT NULL,
 	`Foto` longblob NOT NULL,

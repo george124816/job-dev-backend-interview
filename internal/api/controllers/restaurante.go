@@ -13,7 +13,7 @@ import (
 func GetRestaurantes(c *gin.Context) {
 	restaurantes, err := handle.GetRestaurantes()
 	if err != nil {
-		c.JSON(400, gin.H{"Error:", err.Error()})
+		c.JSON(400, err.Error())
 	} else {
 		c.JSON(200, restaurantes)
 	}
@@ -26,12 +26,14 @@ func InsertRestaurante(c *gin.Context) {
 	foto, _, err := c.Request.FormFile("Foto")
 	if err != nil {
 		log.Println(err)
+		c.JSON(400, gin.H{"error": "Foto inválida"})
 		return
 	}
 
 	file := bytes.NewBuffer(nil)
 	if _, err := io.Copy(file, foto); err != nil {
 		log.Println(err)
+		c.JSON(400, gin.H{"error": "Foto inválida"})
 		return
 	}
 
@@ -69,5 +71,76 @@ func GetRestaurante(c *gin.Context) {
 		}
 	} else {
 		c.JSON(400, gin.H{"error": "Parametro vazio"})
+	}
+}
+
+func AlterarRestaurante(c *gin.Context) {
+
+	var R models.Restaurante
+
+	ID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Insira um inteiro"})
+		return
+	}
+	log.Println(ID)
+
+	foto, _, err := c.Request.FormFile("Foto")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	file := bytes.NewBuffer(nil)
+	if _, err := io.Copy(file, foto); err != nil {
+		log.Println(err)
+		return
+	}
+
+	R.Foto = file.Bytes()
+	R.Nome = c.PostForm("Nome")
+	R.Endereço = c.PostForm("Endereço")
+	R.Funcionamento = c.PostForm("Funcionamento")
+
+	if ID != 0 && R.Foto != nil && R.Nome != "" && R.Endereço != "" && R.Funcionamento != "" {
+		R, err = handle.AlterarRestaurante(ID, R)
+		if err != nil {
+			c.JSON(400, err.Error())
+		} else {
+			c.JSON(200, R)
+		}
+	} else {
+		c.JSON(400, gin.H{"error": "Parametro vazio"})
+	}
+}
+
+func ExcluirRestaurante(c *gin.Context) {
+	ID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Insira um inteiro"})
+		return
+	}
+	err = handle.ExcluirRestaurante(ID)
+	if err != nil {
+		c.JSON(400, err.Error())
+	} else {
+		c.JSON(200, "Restaurante excluido com sucesso!")
+	}
+}
+
+func GetProdutosByRestaurante(c *gin.Context) {
+
+	var Produtos []models.Produto
+
+	ID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Insira um inteiro"})
+		return
+	}
+	Produtos, err = handle.GetProdutosByRestaurante(ID)
+	if err != nil {
+		c.JSON(400, err.Error())
+	} else {
+		c.JSON(200, Produtos)
 	}
 }
