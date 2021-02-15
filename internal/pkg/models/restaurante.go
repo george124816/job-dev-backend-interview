@@ -13,7 +13,7 @@ type Restaurante struct {
 	Funcionamento string `json:"Funcionamento"`
 }
 
-func (h *BaseHandler) GetRestaurantes() []Restaurante {
+func (h *BaseHandler) GetRestaurantes() ([]Restaurante, error) {
 	rows, err := h.db.Query("SELECT Id, Foto, Nome, Endereço, Funcionamento FROM Restaurante")
 	if err != nil {
 		log.Println(err)
@@ -28,8 +28,11 @@ func (h *BaseHandler) GetRestaurantes() []Restaurante {
 		}
 		R = append(R, temp)
 	}
+	if len(R) == 0 {
+		return R, errors.New("Não há restaurante cadastrado")
+	}
 
-	return R
+	return R, nil
 }
 
 func (h *BaseHandler) GetRestaurante(ID int) (Restaurante, error) {

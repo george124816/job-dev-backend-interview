@@ -12,5 +12,6 @@ var handle *models.BaseHandler
 
 func init() {
 	database = db.ConnectDB()
+	migration(database)
 	handle = models.NewBaseHandler(database)
 }

@@ -11,8 +11,12 @@ import (
 )
 
 func GetRestaurantes(c *gin.Context) {
-	restaurantes := handle.GetRestaurantes()
-	c.JSON(200, restaurantes)
+	restaurantes, err := handle.GetRestaurantes()
+	if err != nil {
+		c.JSON(400, gin.H{"Error:", err.Error()})
+	} else {
+		c.JSON(200, restaurantes)
+	}
 }
 
 func InsertRestaurante(c *gin.Context) {

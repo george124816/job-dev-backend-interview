@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -17,16 +18,26 @@ const (
 )
 
 func ConnectDB() *sql.DB {
-	stringConn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?multiStatements=true", user, password, host, port, dbname)
 
-	db, err := sql.Open("mysql", stringConn)
-	if err != nil {
-		log.Panic(err)
-	}
-	err = db.Ping()
-	if err != nil {
-		log.Println(err)
-		return nil
+	var db *sql.DB
+	var err error
+
+	stringConn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?multiStatements=true", user, password, host, port, dbname)
+	for {
+		db, err = sql.Open("mysql", stringConn)
+		if err != nil {
+			log.Println(err)
+		}
+
+		err = db.Ping()
+
+		if err != nil {
+			log.Println(err)
+			time.Sleep(5 * time.Second)
+			db.Close()
+		} else {
+			break
+		}
 	}
 
 	return db

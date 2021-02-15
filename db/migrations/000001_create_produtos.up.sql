@@ -1,7 +1,7 @@
 CREATE TABLE `Produtos` (
 	`Id` INT NOT NULL AUTO_INCREMENT,
 	`IdRestaurante` INT NOT NULL,
-	`Foto` blob NOT NULL,
+	`Foto` longblob NOT NULL,
 	`Nome` varchar(255) NOT NULL,
 	`Preço` INT NOT NULL,
 	`Categoria` varchar(255) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE `Produtos` (
 
 CREATE TABLE `Restaurante` (
 	`Id` INT NOT NULL AUTO_INCREMENT,
-	`Foto` blob NOT NULL,
+	`Foto` longblob NOT NULL,
 	`Nome` varchar(255) NOT NULL,
 	`Endereço` varchar(255) NOT NULL,
 	`Funcionamento` varchar(255) NOT NULL,
