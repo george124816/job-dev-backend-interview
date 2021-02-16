@@ -1,0 +1,9 @@
+database:
+  Dbname: main
+  Host: 127.0.0.1
+  Password: secret
+  Port: 3306
+  User: root
+
+server:
+  port: 3000

@@ -1,8 +1,11 @@
 package api
 
-import "github.com/george124816/job-dev-backend-interview/internal/api/router"
+import (
+	"github.com/george124816/job-dev-backend-interview/internal/api/router"
+	"github.com/george124816/job-dev-backend-interview/internal/pkg/util"
+)
 
 func Run() {
 	web := router.Setup()
-	web.Run(":3000")
+	web.Run(util.LoadConfigPort("."))
 }

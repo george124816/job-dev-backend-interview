@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/george124816/job-dev-backend-interview/internal/pkg/util"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -22,7 +23,12 @@ func ConnectDB() *sql.DB {
 	var db *sql.DB
 	var err error
 
-	stringConn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?multiStatements=true", user, password, host, port, dbname)
+	config, err := util.LoadConfigDatabase(".")
+	if err != nil {
+		log.Println(err)
+	}
+
+	stringConn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?multiStatements=true", config.User, config.Password, config.Host, config.Port, config.Dbname)
 	for {
 		db, err = sql.Open("mysql", stringConn)
 		if err != nil {
