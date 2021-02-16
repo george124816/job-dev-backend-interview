@@ -5,8 +5,6 @@ RUN apk add git
 COPY . /build/
 WORKDIR /build
 RUN go build cmd/api/main.go
-RUN apk add tree
-RUN tree
 
 ## Clean Image
 FROM alpine:3

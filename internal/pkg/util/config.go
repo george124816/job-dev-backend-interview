@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/viper"
 )
@@ -29,6 +30,12 @@ func LoadConfigDatabase(path string) (DatabaseConfiguration, error) {
 		fmt.Printf("Error reading config file, %s", err)
 	}
 
+	viper.SetDefault("database.Dbname", "main")
+	viper.SetDefault("database.Host", "mysql")
+	viper.SetDefault("database.Password", "secret")
+	viper.SetDefault("database.Port", "3306")
+	viper.SetDefault("database.User", "root")
+
 	config.Dbname = viper.GetString("database.Dbname")
 	config.Host = viper.GetString("database.Host")
 	config.Password = viper.GetString("database.Password")
@@ -47,9 +54,15 @@ func LoadConfigPort(path string) string {
 
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Printf("Error reading config file, %s", err)
+		fmt.Println("Retornando variavel de ambiente! -> ", os.Getenv("PORT"))
+		return fmt.Sprintf(":%s", os.Getenv("PORT"))
 	}
 
 	port := viper.GetInt("server.port")
+	if port == 0 {
+		viper.GetString("PORT")
+	}
+	fmt.Println(os.Getenv("PORT"))
 
 	return fmt.Sprintf(":%d", port)
 }
