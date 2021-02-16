@@ -83,7 +83,6 @@ func AlterarRestaurante(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "Insira um inteiro"})
 		return
 	}
-	log.Println(ID)
 
 	foto, _, err := c.Request.FormFile("Foto")
 	if err != nil {
@@ -125,22 +124,5 @@ func ExcluirRestaurante(c *gin.Context) {
 		c.JSON(400, err.Error())
 	} else {
 		c.JSON(200, "Restaurante excluido com sucesso!")
-	}
-}
-
-func GetProdutosByRestaurante(c *gin.Context) {
-
-	var Produtos []models.Produto
-
-	ID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(400, gin.H{"error": "Insira um inteiro"})
-		return
-	}
-	Produtos, err = handle.GetProdutosByRestaurante(ID)
-	if err != nil {
-		c.JSON(400, err.Error())
-	} else {
-		c.JSON(200, Produtos)
 	}
 }

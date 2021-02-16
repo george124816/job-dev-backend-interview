@@ -128,32 +128,3 @@ func (h *BaseHandler) ExcluirRestaurante(ID int) error {
 	}
 	return errors.New("Não foi possivel excluir o restaurante")
 }
-
-func (h *BaseHandler) GetProdutosByRestaurante(ID int) ([]Produto, error) {
-	var Produtos []Produto
-	stmt, err := h.db.Prepare("SELECT Id, IdRestaurante, Foto, Nome, Preço, Categoria, Promoção, DescriçãoPromoção, PreçoPromoção FROM Produto WHERE IdRestaurante = (?)")
-	if err != nil {
-		log.Println(err)
-		return Produtos, err
-	}
-	rows, err := stmt.Query(ID)
-	if err != nil {
-		log.Println(err)
-		return Produtos, err
-	}
-
-	for rows.Next() {
-		var temp Produto
-		err := rows.Scan(&temp.ID, &temp.IDRestaurante, &temp.Foto, &temp.Nome, &temp.Preço, &temp.Categoria, &temp.Promoção, &temp.DescriçãoPromoção, &temp.PreçoPromoção)
-		if err != nil {
-			log.Println(err)
-		}
-		Produtos = append(Produtos, temp)
-	}
-
-	if len(Produtos) == 0 {
-		return Produtos, errors.New("O restaurante não contém produtos.")
-	}
-
-	return Produtos, nil
-}
