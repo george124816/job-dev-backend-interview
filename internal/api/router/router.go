@@ -14,9 +14,6 @@ func Setup() *gin.Engine {
 
 	v1 := router.Group("/api/v1")
 	{
-		v1.GET("/restaurantes", controllers.GetRestaurantes)
-		v1.GET("/produtos", controllers.GetProdutos)
-		v1.GET("/promoções", controllers.GetPromoções)
 		v1.POST("/restaurante", controllers.InsertRestaurante)
 		v1.GET("/restaurante/:id", controllers.GetRestaurante)
 		v1.PUT("/restaurante/:id", controllers.AlterarRestaurante)
@@ -25,6 +22,7 @@ func Setup() *gin.Engine {
 		v1.POST("/produto/", controllers.CriarProduto)
 		v1.PUT("/produto/:id", controllers.AlterarProduto)
 		v1.DELETE("/produto/:id", controllers.DeletarProduto)
+		v1.POST("/promoção", controllers.AdicionarPromoção)
 	}
 
 	return router
